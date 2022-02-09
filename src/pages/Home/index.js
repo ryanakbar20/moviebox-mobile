@@ -6,13 +6,13 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import {Card, Header} from '../../components';
 import {GET_MOVIES} from '../../graphql/movie';
 
-export default function Home() {
+export default function Home({navigation}) {
   const {data} = useQuery(GET_MOVIES);
-  console.log(data);
 
   const [search, setSearch] = useState('');
 
@@ -36,7 +36,13 @@ export default function Home() {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}>
         {datasets(data?.allFilms?.films)?.map((item, index) => {
-          return <Card key={index} data={item} />;
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Detail', {id: item.id})}
+              key={index}>
+              <Card data={item} />
+            </TouchableOpacity>
+          );
         })}
       </ScrollView>
     </SafeAreaView>
